@@ -1,0 +1,37 @@
+
+# ==============================
+# Multi-Agent Research System
+# ==============================
+
+# LangChain framework and agents
+langchain
+langchain-core
+langchain-classic
+# Groq LLM integration
+langchain-groq
+
+#Gemini LLm integration
+langchain-google-genai
+
+# Tavily web search API
+tavily-python
+
+# Web scraping and HTTP requests
+beautifulsoup4
+requests
+lxml
+
+# Environment variables
+python-dotenv
+
+# Data validation and structured outputs
+pydantic
+
+# Rich terminal output
+rich
+
+# Optional: Interactive web interface
+streamlit
+
+# Optional: Better article text extraction
+trafilatura
