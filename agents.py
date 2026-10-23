@@ -7,19 +7,46 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-#Model Setup
-llm = ChatGroq(
+
+from langchain_groq import ChatGroq
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+
+# 1. Search Agent: concise search results
+search_llm = ChatGroq(
     model="openai/gpt-oss-20b",
     temperature=0,
-    max_tokens=1200
+    max_tokens=800
 )
 
-parser=StrOutputParser()
+# 2. Reader Agent: detailed source extraction
+reader_llm = ChatGroq(
+    model="openai/gpt-oss-20b",
+    temperature=0,
+    max_tokens=2500
+)
+
+# 3. Writer Chain: detailed research report
+writer_llm = ChatGroq(
+    model="openai/gpt-oss-20b",
+    temperature=0,
+    max_tokens=2500
+)
+
+# 4. Critic Chain: short report evaluation
+critic_llm = ChatGroq(
+    model="openai/gpt-oss-20b",
+    temperature=0,
+    max_tokens=1000
+)
+
+parser = StrOutputParser()
+
 
 #1st agent
 def build_search_agent():
     return create_agent(
-        model=llm,
+        model=search_llm,
         tools=[web_search],
         system_prompt="""
         You are a web search agent.
@@ -42,7 +69,7 @@ def build_search_agent():
 #2nd agent
 def build_reader_agent():
     return create_agent(
-        model=llm,
+        model=reader_llm,
         tools=[scrape_webpage],
         system_prompt="""
         You are a detailed research reader.
@@ -86,30 +113,31 @@ Structure the report as:
 Be detailed, factual and professional."""),
 ])
 
-writer_chain=writer_prompt | llm | parser
+writer_chain=writer_prompt | writer_llm | parser
 
 #critic chain
 critic_prompt = ChatPromptTemplate.from_messages([
-     ("system", "You are a sharp and constructive research critic. Be honest and specific."),
-    ("human", """Review the research report below and evaluate it strictly.
+    ("system", "You are a concise research report evaluator."),
+    ("human", """
+Evaluate this research report:
 
-Report:
 {report}
 
-Respond in this exact format:
+Return exactly:
 
 Score: X/10
 
 Strengths:
-- ...
-- ...
+- Two concise points
 
 Areas to Improve:
-- ...
-- ...
+- Two concise points
 
 One line verdict:
-..."""),
+- One sentence
+
+Keep your entire evaluation under 150 words.
+"""),
 ])
 
-critic_chain=critic_prompt | llm | parser
+critic_chain=critic_prompt | critic_llm | parser
