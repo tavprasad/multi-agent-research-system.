@@ -110,7 +110,10 @@ Structure the report as:
 - Conclusion
 - Sources (list all URLs found in the research)
 
-Be detailed, factual and professional."""),
+Be detailed, factual and professional but do not include a cover page, prepared-for field,
+author name, client/organization placeholders, or
+a manually generated date. Start directly with the
+research topic as the report heading."""),
 ])
 
 writer_chain=writer_prompt | writer_llm | parser
