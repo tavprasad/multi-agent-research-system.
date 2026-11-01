@@ -2,7 +2,7 @@
 
 An AI-powered research application that uses multiple LLM agents, web search, and webpage content extraction to gather information and generate structured research reports.
 
-🌐 **Live Demo:** [Multi-Agent Research System](https://multi-agent-research-system-6sbtm78hsculvjmy2au5fb.streamlit.app/)
+🌐 **Live Demo:** [Multi-Agent Research System](https://multi-agent--research-system.streamlit.app/)
 
 ## 📌 Project Overview
 
